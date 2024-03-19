@@ -1,0 +1,39 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    name: Release
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up MinGW
+      uses: egor-tensin/setup-mingw@v2
+
+    - name: Generate CMake Projects
+      working-directory: ${{runner.workspace}}
+      run: |
+        cmake -S tolk -B build -DCMAKE_INSTALL_PREFIX=install -DCMAKE_TOOLCHAIN_FILE=../tolk/CMake/mingwcc64.toolchain.cmake
+
+    - name: Build CMake Projects
+      working-directory: ${{runner.workspace}}
+      run: |
+        cmake --build build
+
+    - name: Install CMake Projects
+      working-directory: ${{runner.workspace}}
+      run: |
+        cmake --build build --target install
+
+    - name: Release
+      uses: softprops/action-gh-release@v2
+      with:
+        draft: false
+        fail_on_unmatched_files: true
+        files: |
+          ../install/lib/libTolk.dll
