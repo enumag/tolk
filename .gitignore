@@ -3,7 +3,6 @@ dist/
 *.obj
 *.res
 *.exe
-*.dll
 *.exp
 *.lib
 *.class

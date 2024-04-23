@@ -13,11 +13,7 @@
 
 ScreenReaderDriverNVDA::ScreenReaderDriverNVDA() :
   ScreenReaderDriver(L"NVDA", true, true),
-  #ifdef _WIN64
-  controller(LoadLibrary(L"nvdaControllerClient64.dll")),
-  #else
-  controller(LoadLibrary(L"nvdaControllerClient32.dll")),
-  #endif
+  controller(LoadLibrary(L"nvdaControllerClient.dll")),
   nvdaController_speakText(NULL),
   nvdaController_brailleMessage(NULL),
   nvdaController_cancelSpeech(NULL),
